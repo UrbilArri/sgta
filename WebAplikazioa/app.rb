@@ -2,11 +2,17 @@ require 'sinatra'
 require_relative 'models/product.rb'
 
 get '/' do
-  # HOME LANDING PAGE SHOWING BANNER PHOTO, TITLE, AND SUBTITLE
-  @page_title = "Home"
+  @page_title = "Hasierako orria"
+  render layout: "hasierakoLayout"
   erb :index
 end
 
+get '/erregistratu' do
+  #ERREGISTRATZEKO ORRIA ERAKUSTEN DA HEMEN
+  @page_title = "Erregistroa"
+  layout :layout
+  erb :erregistratu
+end
 
 get '/team' do
   # TEAM PAGE LISTING THE TEAM MEMBERS
