@@ -195,3 +195,14 @@ img.logo {
 .employee, .bio {
   display: block;
 }
+
+.text {
+  color: black;
+  position: absolute;
+  left: 30%;
+}
+
+.textBox{
+  position: absolute;
+  left: 50%;
+}

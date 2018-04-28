@@ -1,5 +1,5 @@
 require 'sinatra'
-require_relative 'models/product.rb'
+require_relative 'models/pertsona.rb'
 
 get '/' do
   #HASIERAKO ORRIA
