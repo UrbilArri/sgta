@@ -11,13 +11,13 @@ end
 get '/erregistratu' do
   #ERREGISTRATZEKO ORRIA ERAKUSTEN DA HEMEN
   @page_title = "Erregistroa"
-  @orria = File.read('views/erregistratu.erb')
+  @orria = File.read('/home/urbil/Escritorio/rubyProiektua/WebAplikazioa/views/erregistratu.erb')
   erb :hasierakoLayout
 end
 
 get '/login' do
   #LOGEATZEKO ORRIA
   @page_title = "Logeatu"
-  @orria = File.read('views/login.erb')
+  @orria = File.read('/home/urbil/Escritorio/rubyProiektua/WebAplikazioa/views/login.erb')
   erb :hasierakoLayout
 end
