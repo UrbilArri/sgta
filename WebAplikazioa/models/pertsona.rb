@@ -9,7 +9,11 @@ class Product < ApplicationRecord
 	validates :korreoa, format{with: /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}/, message: "korreoak emaila@emaila.emaila formatua izan behar du"}
 	validates :hiria, format{with: /[A-Za-z]{0,25}/, message: "hiriaren formatu desegokia"}
 	validates :erabIzena, format{with: /[A-Za-z]{1,15}/, message: "erabiltzaile izenaren formatu desegokia"}
-	
+	validate :pasahitzak_berdinak
+
+	def pasahitzak_berdinak
+		errors.add(:pasahitza2, "pasahitzak ez dira berdinak") if :pasahitza =
+	end
 
 	#ping the API for the product JSON
 	url = 'https://fomotograph-api.udacity.com/products.json'
