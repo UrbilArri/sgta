@@ -7,9 +7,9 @@ class Pertsona < ApplicationRecord
 	# read access for the Product attributes
 	validates :izena, format: {with: /[A-Za-z]{1,15}/, message: "izenaren formatu desegokia"}
 	validates :abizena, format: {with: /[A-Za-z]{1,25}/, message: "abizenaren formatu desegokia"}
-	validates :korreoa, format: {with: /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}/, message: "korreoak emaila@emaila.emaila formatua izan behar du"}
+	validates :korreoa, format: {with: /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}/, message: "korreoak emaila@emaila.emaila formatua izan behar du"}, uniqueness: true
 	validates :hiria, format: {with: /[A-Za-z]{0,25}/, message: "hiriaren formatu desegokia"}
-	validates :erabIzena, format: {with: /[A-Za-z]{1,15}/, message: "erabiltzaile izenaren formatu desegokia"}
+	validates :erabIzena, format: {with: /[A-Za-z]{1,15}/, message: "erabiltzaile izenaren formatu desegokia"}, uniqueness: true
 	validate :pasahitzak_berdinak
 
 	def pasahitzak_berdinak
@@ -17,7 +17,7 @@ class Pertsona < ApplicationRecord
 	end
 
 	#ping the API for the product JSON
-	DATA = File.read('/home/urbil/Escritorio/rubyProiektua/WebAplikazioa/data/pertsona.json')['pertsonak']
+	DATA = File.read('/home/urbil/Escritorio/rubyProiektua/WebAplikazioa/data/erabiltzailea.json')['pertsonak']
 	# locations offered by Fomotograph
 
 	# initialize a Product object using a data hash

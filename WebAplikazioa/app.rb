@@ -1,10 +1,10 @@
 require 'sinatra'
-require_relative 'models/pertsona.rb'
+require_relative 'models/erabiltzailea.rb'
 
 get '/' do
   #HASIERAKO ORRIA
   @page_title = "Hasierako orria"
-  @orria = File.read('views/index.erb')
+  @orria = File.read('/home/urbil/Escritorio/rubyProiektua/WebAplikazioa/views/index.erb')
   erb :hasierakoLayout
 end
 
@@ -21,3 +21,6 @@ get '/login' do
   @orria = File.read('/home/urbil/Escritorio/rubyProiektua/WebAplikazioa/views/login.erb')
   erb :hasierakoLayout
 end
+
+get '/erabiltzailea'
+  #sign-up egitean hemen kontrolatuko dugu egin beharrekoa, hau da, erabiltzaile berria sortzea.

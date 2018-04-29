@@ -1,18 +1,21 @@
 <h1>ERREGISTROA</h1>
-<label class="text">Izena(*)</label>
-<input type="text" name="izena" id="izena" class="textBox"></input><br><br><br>
-<label class="text">Abizena(*)</label>
-<input type="text" name="abizena" id="abizena" class="textBox"></input><br><br><br>
-<label class="text">Korreoa(*)</label>
-<input type="text" name="korreoa" id="korreoa" class="textBox"></input><br><br><br>
-<label class="text">Hiria</label>
-<input type="text" name="hiria" id="hiria" class="textBox"><br><br><br>
-<label class="text">Erabiltzaile izena(*)</label>
-<input type="text" name="erabIzena" name="erabIzena" class="textBox"><br><br><br>
-<label class="text">Pasahitza(*)</label>
-<input type="password" name="pasahitza" id="pasahitza" class="textBox"><br><br><br>
-<label class="text">Pasahitza errepikatu(*)</label>
-<input type="password" name="pasahitza2" id="pasahitza2" class="textBox"><br><br><br>
-<label class="text">(*) daukatenak derrigorrezkoak dira betetzeko</label>
-
+<form method="POST" action="/erabiltzailea">
+	<label class="text">Izena(*)</label>
+	<input type="text" name="izena" id="izena" class="textBox"></input><br><br><br>
+	<label class="text">Abizena(*)</label>
+	<input type="text" name="abizena" id="abizena" class="textBox"></input><br><br><br>
+	<label class="text">Korreoa(*)</label>
+	<input type="text" name="korreoa" id="korreoa" class="textBox"></input><br><br><br>
+	<label class="text">Hiria</label>
+	<input type="text" name="hiria" id="hiria" class="textBox"><br><br><br>
+	<label class="text">Erabiltzaile izena(*)</label>
+	<input type="text" name="erabIzena" name="erabIzena" class="textBox"><br><br><br>
+	<label class="text">Pasahitza(*)</label>
+	<input type="password" name="pasahitza" id="pasahitza" class="textBox"><br><br><br>
+	<label class="text">Pasahitza errepikatu(*)</label>
+	<input type="password" name="pasahitza2" id="pasahitza2" class="textBox"><br><br><br>
+	<label class="text">(*) daukatenak derrigorrezkoak dira betetzeko</label><br><br><br>
+	<input type="submit" name="erregistroBotoia" id="erregistroBotoia" class="text" value="Erregistratu">
+	<input type="button" name="logeraJoanBotoia" id="logeraJoanBotoia" class="textBox" value="Log In-era joan">
+</form>
 
