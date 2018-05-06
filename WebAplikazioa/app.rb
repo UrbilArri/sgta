@@ -22,5 +22,8 @@ get '/login' do
   erb :hasierakoLayout
 end
 
-get '/erabiltzailea'
+post '/erabiltzailea' do
   #sign-up egitean hemen kontrolatuko dugu egin beharrekoa, hau da, erabiltzaile berria sortzea.
+  @user = Erabiltzailea.new(izena: params[:izena], abizena: params[:abizena], korreoa: params[:korreoa], hiria: params[:hiria], erabIzena: params[:erabIzena], pasahitza: params[:pasahitza], pasahitza2: params[:pasahitza2])
+  @user.save
+end

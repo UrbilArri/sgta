@@ -1,13 +1,1 @@
-{
-	"erabiltzaileak" : [
-		{
-			"id" : 1,
-			"Izena" : "Urbil",
-			"Abizena" : "Arribillaga",
-			"Korreoa" : "uarribillaga001@ikasle.ehu.es",
-			"Hiria" : "Irun",
-			"ErabIzena" : "Urbil1",
-			"Pasahitza" : "Pasahitza"
-		}
-	]
-}
+{"erabiltzaileak":[{"id":1,"izena":"Urbil","abizena":"Arribillaga","korreoa":"2garribillagaurbil@gmail.com","hiria":"Irun","erabIzena":"erab","pasahitza":"pasahitza"},{"id":2,"izena":"manolo","abizena":"abizena","korreoa":"korreoa@korreoa.com","hiria":"hiria","erabIzena":"erab","pasahitza":"pasa"},{"id":2,"izena":"manolo","abizena":"abizena","korreoa":"korreoa@korreoa.com","hiria":"hiria","erabIzena":"erab","pasahitza":"pasahitza"}]}

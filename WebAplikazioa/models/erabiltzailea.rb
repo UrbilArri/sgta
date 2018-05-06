@@ -1,10 +1,11 @@
 require 'httparty'
 require 'json'
-require_relative 'application_record.rb'
+require 'active_record'
 
-class Pertsona < ApplicationRecord
-	
-	# read access for the Product attributes
+class Erabiltzailea < ActiveRecord::Base
+
+	attr_reader :izena, :abizena, :korreoa, :hiria, :erabIzena, :pasahitza, :pasahitza2
+
 	validates :izena, format: {with: /[A-Za-z]{1,15}/, message: "izenaren formatu desegokia"}
 	validates :abizena, format: {with: /[A-Za-z]{1,25}/, message: "abizenaren formatu desegokia"}
 	validates :korreoa, format: {with: /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}/, message: "korreoak emaila@emaila.emaila formatua izan behar du"}, uniqueness: true
@@ -16,28 +17,56 @@ class Pertsona < ApplicationRecord
 		errors.add(:pasahitza2, "pasahitzak ez dira berdinak") if not(:pasahitza == :pasahitza2)
 	end
 
-	#ping the API for the product JSON
-	DATA = File.read('/home/urbil/Escritorio/rubyProiektua/WebAplikazioa/data/erabiltzailea.json')['pertsonak']
-	# locations offered by Fomotograph
+	DATA = File.read('/home/urbil/Escritorio/rubyProiektua/WebAplikazioa/data/erabiltzailea.json')['erabiltzaileak']
 
-	# initialize a Product object using a data hash
-	def initialize(person_data = {})
-	  @id = person_data['id']
-	  @Izena = person_data['Izena']
-	  @Abizena = person_data['Abizena']
-	  @Korreoa = person_data['Korreoa']
-	  @Hiria = person_data['Hiria']
-	  @ErabIzena = person_data['ErabIzena']
-	  @Pasahitza = person_data['Pasahitza']
+
+	def initialize(erabiltzaile_data = {})
+	  @id = erabiltzaile_data['id']
+	  @izena = erabiltzaile_data['izena']
+	  @abizena = erabiltzaile_data['abizena']
+	  @korreoa = erabiltzaile_data['korreoa']
+	  @hiria = erabiltzaile_data['hiria']
+	  @erabIzena = erabiltzaile_data['erabIzena']
+	  @pasahitza = erabiltzaile_data['pasahitza']
 	end
 	
 	# Pertsona objektuen Array-a itzuli
 	def self.all
-	  DATA.map {|pertsona| new(pertsona)}
+	  DATA.map {|erabiltzailea| new(erabiltzailea)}
 	end
-	
+
+	def self.new(erabiltzaile_data)
+	  @id = 2
+	  @izena = erabiltzaile_data[:izena]
+	  @abizena = erabiltzaile_data[:abizena]
+	  @korreoa = erabiltzaile_data[:korreoa]
+	  @hiria = erabiltzaile_data[:hiria]
+	  @erabIzena = erabiltzaile_data[:erabIzena]
+	  @pasahitza = :pasahitza
+	  return self
+	end
+
+	def self.save
+	  map = {
+	  		"id" => @id ,
+			"izena" => @izena,
+			"abizena" => @abizena,
+			"korreoa" => @korreoa,
+			"hiria" => @hiria,
+			"erabIzena" => @erabIzena,
+			"pasahitza" => @pasahitza
+	  }
+	  File.open('/home/urbil/Escritorio/rubyProiektua/WebAplikazioa/data/erabiltzailea.json', "r+") do |f|
+	  hash = JSON.parse(f.read)
+	  hash["erabiltzaileak"].push(map)
+	  File.open('/home/urbil/Escritorio/rubyProiektua/WebAplikazioa/data/erabiltzailea.json', "w+") do |fi| 
+	  fi.write(hash.to_json)
+	  end
+	  end
+	end
+
 	#id-a daukan pertsona itzuli
 	def self.find(id)
-	  self.all.select{|pertsona| pertsona.id == id}.first
+	  self.all.select{|erabiltzailea| erabiltzailea.id == id}.first
 	end
 end
