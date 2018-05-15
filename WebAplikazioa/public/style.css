@@ -206,3 +206,9 @@ img.logo {
   position: absolute;
   left: 50%;
 }
+
+.redText {
+  color: red;
+  position: absolute;
+  left: 75%;
+}

@@ -9,9 +9,11 @@ class Erabiltzailea
 
 	validates :izena, :format => {with: /[A-Za-z]{1,15}/, message: "izenaren formatu desegokia"}
 	validates :abizena, format: {with: /[A-Za-z]{1,25}/, message: "abizenaren formatu desegokia"}
-	validates :korreoa, format: {with: /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}/, message: "korreoak emaila@emaila.emaila formatua izan behar du"}#, uniqueness: true
+	validates :korreoa, format: {with: /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}/, message: "korreoak emaila@emaila.emaila 
+	 formatua izan behar du"}#, uniqueness: true
 	validates :hiria, format: {with: /[A-Za-z]{0,25}/, message: "hiriaren formatu desegokia"}
 	validates :erabIzena, format: {with: /[A-Za-z]{1,15}/, message: "erabiltzaile izenaren formatu desegokia"}#, uniqueness: true
+	validates :pasahitza, format: {with: /[A-Za-z0-9]{4, 25}/, message: "pasahitzak gutxienez lau luzerakoa"}
 	validate :pasahitzak_berdinak
 
 	def pasahitzak_berdinak

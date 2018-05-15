@@ -1,0 +1,28 @@
+<h1>ERREGISTROA</h1>
+<form method="POST" action="/erregistroa">
+	<label class="text">Izena(*)</label>
+	<input type="text" name="izena" id="izena" class="textBox" value=<%if @params.present?%><% if @params[:izena].present?%><%= @params[:izena]%><%end%><%end%>></input>
+	<label class="redText"><%if @erroreak.present?%><% if @erroreak[:izena].present?%><%= @erroreak[:izena].first%><%end%><%end%></label><br><br><br>
+	<label class="text">Abizena(*)</label>
+	<input type="text" name="abizena" id="abizena" class="textBox" value=<%if @params.present?%><% if @params[:abizena].present?%><%= @params[:abizena]%><%end%><%end%>></input>
+	<label class="redText"><%if @erroreak.present?%><% if @erroreak[:abizena].present?%><%= @erroreak[:abizena].first%><%end%><%end%></label><br><br><br>
+	<label class="text">Korreoa(*)</label>
+	<input type="text" name="korreoa" id="korreoa" class="textBox" value=<%if @params.present?%><% if @params[:korreoa].present?%><%= @erroreak[:korreoa]%><%end%><%end%>></input>
+	<label class="redText"><%if @erroreak.present?%><% if @erroreak[:korreoa].present?%><%= @erroreak[:korreoa].first%><%end%><%end%></label><br><br><br>
+	<label class="text">Hiria</label>
+	<input type="text" name="hiria" id="hiria" class="textBox" value=<%if @params.present?%><% if @params[:hiria].present?%><%= @params[:hiria]%><%end%><%end%>>
+	<label class="redText"><%if @erroreak.present?%><% if @erroreak[:hiria].present?%><%= @erroreak[:hiria].first%><%end%><%end%></label><br><br><br>
+	<label class="text">Erabiltzaile izena(*)</label>
+	<input type="text" name="erabIzena" name="erabIzena" class="textBox" value=<%if @params.present?%><% if @params[:erabIzena].present?%><%= @params[:erabIzena]%><%end%><%end%>>
+	<label class="redText"><%if @erroreak.present?%><% if @erroreak[:erabIzena].present?%><%= @erroreak[:erabIzena].first%><%end%><%end%></label><br><br><br>
+	<label class="text">Pasahitza(*)</label>
+	<input type="password" name="pasahitza" id="pasahitza" class="textBox">
+	<label class="redText"><%if @erroreak.present?%><% if @erroreak[:pasahitza].present?%><%= @erroreak[:pasahitza].first%><%end%><%end%></label><br><br><br>
+	<label class="text">Pasahitza errepikatu(*)</label>
+	<input type="password" name="pasahitza2" id="pasahitza2" class="textBox">
+	<label class="redText"><%if @erroreak.present?%><% if @erroreak[:pasahitza2].present?%><%= @erroreak[:pasahitza2].first%><%end%><%end%></label><br><br><br>
+	<label class="text">(*) daukatenak derrigorrezkoak dira betetzeko</label><br><br><br>
+	<input type="submit" name="erregistroBotoia" id="erregistroBotoia" class="text" value="Erregistratu">
+	<input type="button" name="logeraJoanBotoia" id="logeraJoanBotoia" class="textBox" value="Log In-era joan">
+</form>
+

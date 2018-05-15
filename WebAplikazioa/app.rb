@@ -5,26 +5,28 @@ require 'erb'
 get '/' do
   #HASIERAKO ORRIA
   @page_title = "Hasierako orria"
-  @orria = File.read('/home/urbil/Escritorio/rubyProiektua/WebAplikazioa/views/index.erb')
-  erb :hasierakoLayout
+  @esteka1 = '/erregistratu'
+  @esteka2 = 'login'
+  erb :index
 end
 
-get '/erregistroak/erregistratu' do
+get '/erregistratu' do
   #ERREGISTRATZEKO ORRIA ERAKUSTEN DA HEMEN
   @page_title = "Erregistroa"
-  @fitx = File.read('/home/urbil/Escritorio/rubyProiektua/WebAplikazioa/views/erregistroak/erregistratu.erb')
-  @orria = ERB.new(@fitx).result()
-  erb :hasierakoLayout
+  @esteka1 = '/erregistratu'
+  @esteka2 = 'login'
+  erb :erregistratu
 end
 
-get '/sesioak/login' do
+get '/login' do
   #LOGEATZEKO ORRIA
   @page_title = "Logeatu"
-  @orria = File.read('/home/urbil/Escritorio/rubyProiektua/WebAplikazioa/views/sesioak/login.erb')
-  erb :hasierakoLayout
+  @esteka1 = '/erregistratu'
+  @esteka2 = 'login'
+  erb :login
 end
 
-post '/erregistroak' do
+post '/erregistroa' do
   #sign-up egitean hemen kontrolatuko dugu egin beharrekoa, hau da, erabiltzaile berria sortzea.
   @user = Erabiltzailea.new
   @user.izena = params[:izena] 
@@ -37,5 +39,11 @@ post '/erregistroak' do
   if @user.valid?
     @user.save
   else
+    @erroreak = @user.errors
+    @page_title = "Erregistroa"
+    @esteka1 = '/erregistratu'
+    @esteka2 = 'login'
+    @para = params
+    erb :erregistratu
   end
 end
