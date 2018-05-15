@@ -13,15 +13,19 @@ class Erabiltzailea
 	 formatua izan behar du"}#, uniqueness: true
 	validates :hiria, format: {with: /[A-Za-z]{0,25}/, message: "hiriaren formatu desegokia"}
 	validates :erabIzena, format: {with: /[A-Za-z]{1,15}/, message: "erabiltzaile izenaren formatu desegokia"}#, uniqueness: true
-	validates :pasahitza, format: {with: /[A-Za-z0-9]{4, 25}/, message: "pasahitzak gutxienez lau luzerakoa"}
+	validates :pasahitza, format: {with: /[A-Za-z0-9]{4,25}/, message: "pasahitzak gutxienez lau luzerakoa"}
 	validate :pasahitzak_berdinak
 
 	def pasahitzak_berdinak
-		errors.add(:pasahitza2, "pasahitzak ez dira berdinak") if not(:pasahitza == :pasahitza2)
+		errors.add(:pasahitza2, "pasahitzak ez dira berdinak") if (pasahitza != pasahitza2)
 	end
 
-	DATA = File.read('/home/urbil/Escritorio/rubyProiektua/WebAplikazioa/data/erabiltzailea.json')['erabiltzaileak']
-
+	def bakarra
+	   File.open('/home/urbil/Escritorio/rubyProiektua/WebAplikazioa/data/erabiltzailea.json', "r+") do |f|
+	  	hash = JSON.parse(f.read)
+	  	puts hash["erabiltzaileak"]["izena"]
+	  end
+	end
 
 	#def initialize(erabiltzaile_data)
 	  #@id = erabiltzaile_data[:id]

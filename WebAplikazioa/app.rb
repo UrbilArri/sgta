@@ -34,6 +34,8 @@ post '/erregistroa' do
   @user.korreoa = params[:korreoa]
   @user.hiria = params[:hiria]
   @user.erabIzena = params[:erabIzena]
+  puts params[:pasahitza]
+  puts params[:pasahitza2]
   @user.pasahitza = params[:pasahitza]
   @user.pasahitza2 = params[:pasahitza2]
   if @user.valid?
