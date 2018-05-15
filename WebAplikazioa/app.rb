@@ -1,5 +1,6 @@
 require 'sinatra'
 require_relative 'models/erabiltzailea.rb'
+require 'erb'
 
 get '/' do
   #HASIERAKO ORRIA
@@ -11,14 +12,15 @@ end
 get '/erregistroak/erregistratu' do
   #ERREGISTRATZEKO ORRIA ERAKUSTEN DA HEMEN
   @page_title = "Erregistroa"
-  @orria = File.read('/home/urbil/Escritorio/rubyProiektua/WebAplikazioa/views/erregistratu.erb')
+  @fitx = File.read('/home/urbil/Escritorio/rubyProiektua/WebAplikazioa/views/erregistroak/erregistratu.erb')
+  @orria = ERB.new(@fitx).result()
   erb :hasierakoLayout
 end
 
 get '/sesioak/login' do
   #LOGEATZEKO ORRIA
   @page_title = "Logeatu"
-  @orria = File.read('/home/urbil/Escritorio/rubyProiektua/WebAplikazioa/views/login.erb')
+  @orria = File.read('/home/urbil/Escritorio/rubyProiektua/WebAplikazioa/views/sesioak/login.erb')
   erb :hasierakoLayout
 end
 
@@ -35,6 +37,5 @@ post '/erregistroak' do
   if @user.valid?
     @user.save
   else
-    @user.errors.full_messages
   end
 end

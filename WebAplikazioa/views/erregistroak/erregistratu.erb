@@ -1,4 +1,4 @@
-<h1>ERREGISTROA</h1>
+<!-- <h1>ERREGISTROA</h1>
 <form method="POST" action="/erregistroak">
 	<label class="text">Izena(*)</label>
 	<input type="text" name="izena" id="izena" class="textBox"></input><br><br><br>
@@ -17,5 +17,23 @@
 	<label class="text">(*) daukatenak derrigorrezkoak dira betetzeko</label><br><br><br>
 	<input type="submit" name="erregistroBotoia" id="erregistroBotoia" class="text" value="Erregistratu">
 	<input type="button" name="logeraJoanBotoia" id="logeraJoanBotoia" class="textBox" value="Log In-era joan">
-</form>
+</form> -->
 
+<h1>ERREGISTROA</h1>
+<%= form_for  post do |f| %>
+	<%= f.label :attribute, "Izena(*)", :html => {:class => 'text'} %>
+	<%= f.text_field :izena, :html =>{:class => 'textBox'} %><br><br><br>
+	<%= f.label :attribute1, "Abizena(*)", :html => {:class => 'text'} %>
+	<%= f.text_field :abizena, :html =>{:class => 'textBox'} %><br><br><br>
+	<%= f.label :attribute2, "Korreoa(*)", :html => {:class => 'text'} %>
+	<%= f.text_field :korreoa, :html =>{:class => 'textBox'} %><br><br><br>
+	<%= f.label :attribute3, "Hiria", :html => {:class => 'text'} %>
+	<%= f.text_field :hiria, :html =>{:class => 'textBox'} %><br><br><br>
+	<%= f.label :attribute4, "Erabiltzaile izena(*)", :html => {:class => 'text'} %>
+	<%= f.text_field :erabIzena, :html =>{:class => 'textBox'} %><br><br><br>
+	<%= f.label :attribute5, "Pasahitza(*)", :html => {:class => 'text'} %>
+	<%= f.password_field :pasahitza, :html =>{:class => 'textBox'} %><br><br><br>
+	<%= f.label :attribute6, "Pasahitza errepikatu(*)", :html => {:class => 'text'} %>
+	<%= f.password_field :pasahitza2, :html =>{:class => 'textBox'} %><br><br><br>
+	<%= f.submit "Submit" %>
+<% end %>
