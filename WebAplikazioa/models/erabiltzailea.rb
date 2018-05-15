@@ -1,16 +1,17 @@
 require 'httparty'
 require 'json'
-require 'activerecord'
+require 'active_model'
 
-class Erabiltzailea < ActiveRecord::Base
+class Erabiltzailea
+	include ActiveModel::Validations
 
-	attr_accessor :izena, :abizena, :korreoa, :hiria, :erabIzena, :pasahitza, :pasahitza2
+	attr_accessor :id, :izena, :abizena, :korreoa, :hiria, :erabIzena, :pasahitza, :pasahitza2
 
 	validates :izena, :format => {with: /[A-Za-z]{1,15}/, message: "izenaren formatu desegokia"}
 	validates :abizena, format: {with: /[A-Za-z]{1,25}/, message: "abizenaren formatu desegokia"}
-	validates :korreoa, format: {with: /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}/, message: "korreoak emaila@emaila.emaila formatua izan behar du"}, uniqueness: true
+	validates :korreoa, format: {with: /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}/, message: "korreoak emaila@emaila.emaila formatua izan behar du"}#, uniqueness: true
 	validates :hiria, format: {with: /[A-Za-z]{0,25}/, message: "hiriaren formatu desegokia"}
-	validates :erabIzena, format: {with: /[A-Za-z]{1,15}/, message: "erabiltzaile izenaren formatu desegokia"}, uniqueness: true
+	validates :erabIzena, format: {with: /[A-Za-z]{1,15}/, message: "erabiltzaile izenaren formatu desegokia"}#, uniqueness: true
 	validate :pasahitzak_berdinak
 
 	def pasahitzak_berdinak
@@ -20,32 +21,31 @@ class Erabiltzailea < ActiveRecord::Base
 	DATA = File.read('/home/urbil/Escritorio/rubyProiektua/WebAplikazioa/data/erabiltzailea.json')['erabiltzaileak']
 
 
-	def initialize(erabiltzaile_data)
-	  @id = erabiltzaile_data[:id]
-	  @izena = erabiltzaile_data[:izena]
-	  @abizena = erabiltzaile_data[:abizena]
-	  @korreoa = erabiltzaile_data[:korreoa]
-	  @hiria = erabiltzaile_data[:hiria]
-	  @erabIzena = erabiltzaile_data[:erabIzena]
-	  @pasahitza = erabiltzaile_data[:pasahitza]
-	end
+	#def initialize(erabiltzaile_data)
+	  #@id = erabiltzaile_data[:id]
+	  #@izena = erabiltzaile_data[:izena]
+	  #@abizena = erabiltzaile_data[:abizena]
+	  #@korreoa = erabiltzaile_data[:korreoa]
+	  #@hiria = erabiltzaile_data[:hiria]
+	  #@erabIzena = erabiltzaile_data[:erabIzena]
+	  #@pasahitza = erabiltzaile_data[:pasahitza]
+	#end
 	
 	# Pertsona objektuen Array-a itzuli
 	def self.all
 	  DATA.map {|erabiltzailea| new(erabiltzailea)}
 	end
 
-	def self.new(erabiltzaile_data)
-	  @id = 2
-	  @izena = erabiltzaile_data[:izena]
-	  @abizena = erabiltzaile_data[:abizena]
-	  @korreoa = erabiltzaile_data[:korreoa]
-	  @hiria = erabiltzaile_data[:hiria]
-	  @erabIzena = erabiltzaile_data[:erabIzena]
-	  @pasahitza = erabiltzaile_data[:pasahitza]
-	  #@izena.valid?
-	  return self
-	end
+	#def self.new(izena, abizena, korreoa, hiria, erabIzena, pasahitza, pasahitza2)
+	  #@id = 2
+	  #@izena = :izena
+	  #@abizena = :abizena
+	  #@korreoa = :korreoa
+	  #@hiria = :hiria
+	  #@erabIzena = :erabIzena
+	  #@pasahitza = :pasahitza
+	  #return self
+	#end
 
 	def self.save
 	  map = {

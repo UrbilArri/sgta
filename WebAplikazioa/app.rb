@@ -8,22 +8,33 @@ get '/' do
   erb :hasierakoLayout
 end
 
-get '/erregistratu' do
+get '/erregistroak/erregistratu' do
   #ERREGISTRATZEKO ORRIA ERAKUSTEN DA HEMEN
   @page_title = "Erregistroa"
   @orria = File.read('/home/urbil/Escritorio/rubyProiektua/WebAplikazioa/views/erregistratu.erb')
   erb :hasierakoLayout
 end
 
-get '/login' do
+get '/sesioak/login' do
   #LOGEATZEKO ORRIA
   @page_title = "Logeatu"
   @orria = File.read('/home/urbil/Escritorio/rubyProiektua/WebAplikazioa/views/login.erb')
   erb :hasierakoLayout
 end
 
-post '/erabiltzailea' do
+post '/erregistroak' do
   #sign-up egitean hemen kontrolatuko dugu egin beharrekoa, hau da, erabiltzaile berria sortzea.
-  @user = Erabiltzailea.new(izena: params[:izena], abizena: params[:abizena], korreoa: params[:korreoa], hiria: params[:hiria], erabIzena: params[:erabIzena], pasahitza: params[:pasahitza], pasahitza2: params[:pasahitza2])
-  @user.save
+  @user = Erabiltzailea.new
+  @user.izena = params[:izena] 
+  @user.abizena = params[:abizena]
+  @user.korreoa = params[:korreoa]
+  @user.hiria = params[:hiria]
+  @user.erabIzena = params[:erabIzena]
+  @user.pasahitza = params[:pasahitza]
+  @user.pasahitza2 = params[:pasahitza2]
+  if @user.valid?
+    @user.save
+  else
+    @user.errors.full_messages
+  end
 end
