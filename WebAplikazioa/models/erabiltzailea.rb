@@ -1,4 +1,3 @@
-require 'httparty'
 require 'json'
 require 'active_model'
 
@@ -10,9 +9,9 @@ class Erabiltzailea
 	validates :izena, :format => {with: /[A-Za-z]{1,15}/, message: "izenaren formatu desegokia"}
 	validates :abizena, format: {with: /[A-Za-z]{1,25}/, message: "abizenaren formatu desegokia"}
 	validates :korreoa, format: {with: /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}/, message: "korreoak emaila@emaila.emaila 
-	 formatua izan behar du"}#, uniqueness: true
+	 formatua izan behar du"}
 	validates :hiria, format: {with: /[A-Za-z]{0,25}/, message: "hiriaren formatu desegokia"}
-	validates :erabIzena, format: {with: /[A-Za-z]{1,15}/, message: "erabiltzaile izenaren formatu desegokia"}#, uniqueness: true
+	validates :erabIzena, format: {with: /[A-Za-z]{1,15}/, message: "erabiltzaile izenaren formatu desegokia"}
 	validates :pasahitza, format: {with: /[A-Za-z0-9]{4,25}/, message: "pasahitzak gutxienez lau luzerakoa"}
 	validate :pasahitzak_berdinak, :bakarra
 
@@ -20,7 +19,8 @@ class Erabiltzailea
 		errors.add(:pasahitza2, "pasahitzak ez dira berdinak") if (pasahitza != pasahitza2)
 	end
 
-	DATA = File.read('/home/urbil/Escritorio/rubyProiektua/WebAplikazioa/data/erabiltzailea.json')
+	helbidea = File.join(File.dirname(__FILE__),'../data/erabiltzailea.json')
+	DATA = File.read(helbidea)
 
 	#def initialize(erabiltzaile_data)
 	  #@id = erabiltzaile_data['id']
@@ -35,10 +35,12 @@ class Erabiltzailea
 	def bakarra
 		hash = JSON.parse(DATA)
 		@erabiltzaileak = hash["erabiltzaileak"]
-		@erabIzenak = @erabiltzaileak.collect{| erab | erab['izena'] = erabIzena}
-		@korreoak = @erabiltzaileak.collect{| erab | erab['korreoa'] = korreoa}
-		errors.add(:erabIzena, "erabiltzaile izen hori jada hartuta dago") if @erabIzenak.length > 0
-		errors.add(:korreoa, "korreo hori jada hartuta dago") if @korreoak.length > 0
+		puts erabIzena
+		puts korreoa
+		@erabIzenak = @erabiltzaileak.collect{| erab | erab["erabIzena"] == erabIzena}
+		@korreoak = @erabiltzaileak.collect{| erab | erab["korreoa"] == korreoa}
+		errors.add(:erabIzena, "erabiltzaile izen hori jada hartuta dago") if @erabIzenak.any?
+		errors.add(:korreoa, "korreo hori jada hartuta dago") if @korreoak.any?
 	end
 	
 	# Pertsona objektuen Array-a itzuli
@@ -57,9 +59,12 @@ class Erabiltzailea
 	  #return self
 	#end
 
-	def self.save
+	def save
+		hash = JSON.parse(DATA)
+		zenb = hash["erabiltzaileak"].length
+		zenb = zenb +1
 	  map = {
-	  		"id" => @id ,
+	  		"id" => zenb,
 			"izena" => @izena,
 			"abizena" => @abizena,
 			"korreoa" => @korreoa,
@@ -67,10 +72,11 @@ class Erabiltzailea
 			"erabIzena" => @erabIzena,
 			"pasahitza" => @pasahitza
 	  }
-	  File.open('/home/urbil/Escritorio/rubyProiektua/WebAplikazioa/data/erabiltzailea.json', "r+") do |f|
+	  helbidea = File.join(File.dirname(__FILE__),'../data/erabiltzailea.json')
+	  File.open(helbidea, "r+") do |f|
 	  hash = JSON.parse(f.read)
 	  hash["erabiltzaileak"].push(map)
-	  File.open('/home/urbil/Escritorio/rubyProiektua/WebAplikazioa/data/erabiltzailea.json', "w+") do |fi| 
+	  File.open(helbidea, "w+") do |fi| 
 	  fi.write(hash.to_json)
 	  end
 	  end

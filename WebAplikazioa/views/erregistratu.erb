@@ -1,5 +1,5 @@
 <h1>ERREGISTROA</h1>
-<form method="POST" action="/erregistroa">
+<form method="POST" action="/erregistratu">
 	<label class="text">Izena(*)</label>
 	<input type="text" name="izena" id="izena" class="textBox" value=<%if @params.present?%><% if @params[:izena].present?%><%= @params[:izena]%><%end%><%end%>></input>
 	<label class="redText"><%if @erroreak.present?%><% if @erroreak[:izena].present?%><%= @erroreak[:izena].first%><%end%><%end%></label><br><br><br>

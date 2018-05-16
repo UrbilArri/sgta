@@ -1,0 +1,13 @@
+<h1>ABISUAK</h1>
+<div style="position: absolute; left: 30%; top: 5%">
+	<% if @abisuak.length > 0%>
+		<table border = "1" style="overflow-y:auto;"> </br>
+			<tr><td>Data</td><td>Mota</td><td>Errepidea</td><td>Abisu osoa ikusi</td></tr></br>
+			<% @abisuak.each do |abisua| %>
+				<tr><td><%= abisua["data"] %></td><td><%= abisua["mota"] %></td><td><%= abisua["errepidea"] %></td></tr><br>
+			<% end %>
+		</table>
+	<% end %>
+</div>
+<div><input type="button" class="textBox" value="Abisua igo" onclick="javascript:window.location.href='/abisuaIgo'" style="position: absolute; bottom: 2%"></input></div>
+

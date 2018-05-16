@@ -1,0 +1,23 @@
+<h1>BIDALI ZURE ABISUA</h1>
+	<label class="text">(*) derrigorrezkoak dira betetzea</label><br><br>
+	<form action="/abisuaIgo" id="formularioa" name="formularioa" method="post">
+		<label class="text">Mota(*):</label><select class="textBox" name="mota" id="mota"> 
+				<option value="Kontrola">Kontrola</option>
+				<option value="Auto Ilara">Auto-ilara</option>
+				<option value="Istripua">Istripua</option>
+				<option value="Obrak">Obrak</option>
+			</select><br><br><br>
+		<label class="text">Probintzia(*):</label><select name="probintzia" id="probintzia" class="textBox"> 
+				<option value="Gipuzkoa">Gipuzkoa</option>
+				<option value="Bizkaia">Bizkaia</option>
+				<option value="Araba">Araba</option>
+				<option value="Nafarroa">Nafarroa</option>
+			</select><br><br><br>
+		<label class="text">Hiria(*):</label><input type="text" id="hiria" name="hiria" class="textBox" value=<%if @params.present?%><% if @params[:hiria].present?%><%= @params[:hiria]%><%end%><%end%>>
+		<label class="redText"><%if @erroreak.present?%><% if @erroreak[:hiria].present?%><%= @erroreak[:hiria].first%><%end%><%end%></label><br><br><br>
+		<label class="text">Errepidea(*):</label><input type="text" id="errepidea" name="errepidea" class="textBox" value=<%if @params.present?%><% if @params[:errepidea].present?%><%= @params[:errepidea]%><%end%><%end%>>
+		<label class="redText"><%if @erroreak.present?%><% if @erroreak[:errepidea].present?%><%= @erroreak[:errepidea].first%><%end%><%end%></label><br><br><br>
+		<label class="text">Iruzkina:</label><textarea name="iruzkina" id="iruzkina" rows="5" cols="100" class="textBox"><%if @params.present?%><% if @params[:iruzkina].present?%><%= @params[:iruzkina]%><%end%><%end%></textarea><br><br><br><br><br><br><br>
+		<input type="submit" id="bidali" name="bidali" value="Bidali" class="text"></input>
+		<input type="button" id="itzuli" name="itzuli" value="Itzuli" onclick="javascript:window.location.href='/abisuak'" class="textBox"></input>	
+	</form>
