@@ -99,3 +99,13 @@ get '/abisuaIgo' do
   @izen2 = "profila"
   erb :abisuaIgo
 end
+
+get '/abisua/:id' do
+  @abisua = Abisua.find(params[:id])
+  @page_title = "Abisua"
+  @esteka1 = '/logout'
+  @esteka2 = '/profila'
+  @izen1 = "log out"
+  @izen2 = "profila"
+  erb :abisua
+end

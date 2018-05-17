@@ -41,4 +41,9 @@ def self.denak
 	return hash["abisuak"]
 end
 
+def self.find(id)
+	hash = JSON.parse(DATA)
+	abisuak = hash["abisuak"]
+	return abisuak.find{|ab| ab['id'] == Integer(id)}
+end
 end
