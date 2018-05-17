@@ -8,7 +8,7 @@
 	<% if @abisuak.length > 0%>
 		<table border = "solid" style=" width: 100%; border-color: black; border-top: none; border-top-width: 0; ">
 			<% @abisuak.each do |abisua| %>
-				<tr><td style="width: 35%;"><%= abisua["data"] %></td><td style="width: 25%;"><%= abisua["mota"] %></td><td style="width: 20%;"><%= abisua["errepidea"] %></td><td style="width: 20%;"><a href='/abisua/<%= abisua["id"] %>'> abisu osoa ikusi</a></td></tr>
+				<tr><td style="width: 35%;"><%= abisua.data %></td><td style="width: 25%;"><%= abisua.mota %></td><td style="width: 20%;"><%= abisua.errepidea %></td><td style="width: 20%;"><a href='/abisua/<%= abisua.id %>'> abisu osoa ikusi</a></td></tr>
 			<% end %>
 		</table>
 	<% end %>

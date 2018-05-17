@@ -1,0 +1,9 @@
+<h1> Login </h1>
+<form method="POST" action="/login">
+	<label class="text">Erabiltzaile izena(*)</label>
+	<input type="text" name="erabIzena" name="erabIzena" class="textBox"><br><br><br>
+	<label class="text">Pasahitza(*)</label>
+	<input type="password" name="pasahitza" id="pasahitza" class="textBox"><br><br><br>
+	<input type="submit" name="loginBotoia" id="loginBotoia" class="text" value="Login">
+	<label class="redText"><%if @erroreak.present?%><% if @erroreak.present?%><%= @erroreak%><%end%><%end%></label>
+</form>

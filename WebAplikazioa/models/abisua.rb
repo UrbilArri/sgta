@@ -9,16 +9,31 @@ attr_accessor :id, :data, :mota, :probintzia, :hiria, :errepidea, :iruzkina
 validates :hiria, format: {with: /[A-Za-z]{2,35}/, message: "hiriaren formatu desegokia"}
 validates :errepidea, format: {with: /[A-Z]{0,3}+-[0-9]{1,4}/, message: "errepidearen formatu desegokia"}
 
+DATA = (JSON.parse(File.read(File.join(File.dirname(__FILE__),'../data/abisua.json'))))["abisuak"]
 
-helbidea = File.join(File.dirname(__FILE__),'../data/abisua.json')
-DATA = File.read(helbidea)
+def self.all
+		return DATA.map {|abisua| self.new(abisua)}
+end
+
+def self.hurrengoId
+		zenb = self.all.length
+		zenb = zenb +1
+		return zenb 
+end
+
+def initialize(abisu_data)
+	  @id = abisu_data['id']
+	  @data = abisu_data['data']
+	  @mota = abisu_data['mota']
+	  @probintzia = abisu_data['probintzia']
+	  @hiria = abisu_data['hiria']
+	  @errepidea = abisu_data['errepidea']
+	  @iruzkina = abisu_data['iruzkina']
+end
 
 def save 
-	hash = JSON.parse(DATA)
-	zenb = hash["abisuak"].length
-	zenb = zenb +1
 	map = {
-	  		"id" => zenb,
+	  		"id" => @id,
 			"data" => @data,
 			"mota" => @mota,
 			"probintzia" => @probintzia,
@@ -27,23 +42,14 @@ def save
 			"iruzkina" => @iruzkina
 	  }
 	  helbidea = File.join(File.dirname(__FILE__),'../data/abisua.json')
-	  File.open(helbidea, "r+") do |f|
-	  hash = JSON.parse(f.read)
-	  hash["abisuak"].push(map)
+	  DATA.push(map)
 	  File.open(helbidea, "w+") do |fi| 
-	  fi.write(hash.to_json)
+	  fi.write(DATA.to_json)
 	  end
-	  end
-end
-
-def self.denak
-	hash = JSON(DATA)
-	return hash["abisuak"]
 end
 
 def self.find(id)
-	hash = JSON.parse(DATA)
-	abisuak = hash["abisuak"]
-	return abisuak.find{|ab| ab['id'] == Integer(id)}
+	return self.all.find{|ab| ab.id == Integer(id)}
 end
+
 end

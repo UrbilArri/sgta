@@ -29,19 +29,46 @@ get '/login' do
   @esteka2 = 'login'
   @izen1 = "erregistratu"
   @izen2 = "log in"
+  session[:user_id]
   erb :login
+end
+
+post '/login' do
+  #login egitean hemen kontrolatuko dugu egin beharrekoa, hau da, sesio berri bat sortzea.
+  @izena = params[:erabIzena]
+  @pass = params[:pasahitza]
+  if @izena.eql? '' or @pass.eql? ''
+    @erroreak = 'Erabiltzailea eta pasahitza sartu behar dira'
+    @page_title = "Logeatu"
+    @esteka1 = '/erregistratu'
+    @esteka2 = 'login'
+    erb :login
+  else
+    @user = Erabiltzailea.find_by_erab(@izena, @pass)
+    if @user
+      session[:user_id] = @user['id']
+      puts sessions[:user_id]
+      redirect '/profila'
+    else
+      @erroreak = 'Erabiltzaile edo pasahitz desegokiak'
+      @page_title = "Logeatu"
+      @esteka1 = '/erregistratu'
+      @esteka2 = 'login'
+      erb :login
+    end
+  end
 end
 
 post '/erregistratu' do
   #sign-up egitean hemen kontrolatuko dugu egin beharrekoa, hau da, erabiltzaile berria sortzea.
-  @user = Erabiltzailea.new
-  @user.izena = params[:izena] 
-  @user.abizena = params[:abizena]
-  @user.korreoa = params[:korreoa]
-  @user.hiria = params[:hiria]
-  @user.erabIzena = params[:erabIzena]
-  @user.pasahitza = params[:pasahitza]
-  @user.pasahitza2 = params[:pasahitza2]
+  @user = Erabiltzailea.new({"id" => Erabiltzailea.hurrengoId,
+  "izena" => params[:izena], 
+  "abizena" => params[:abizena], 
+  "korreoa" => params[:korreoa], 
+  "hiria" => params[:hiria], 
+  "erabIzena" => params[:erabIzena], 
+  "pasahitza" => params[:pasahitza], 
+  "pasahitza2" => params[:pasahitza2]})
   if @user.valid?
     @user.save
     redirect '/abisuak'
@@ -58,13 +85,13 @@ post '/erregistratu' do
 end
 
 post '/abisuaIgo' do
-  @abisua = Abisua.new
-  @abisua.data = Time.now
-  @abisua.mota = params[:mota]
-  @abisua.probintzia = params[:probintzia]
-  @abisua.hiria = params[:hiria]
-  @abisua.errepidea = params[:errepidea]
-  @abisua.iruzkina = params[:iruzkina]
+  @abisua = Abisua.new({"id" => Abisua.hurrengoId,
+   "data" => Time.now ,
+   "mota" => params[:mota],
+   "probintzia" => params[:probintzia],
+   "hiria" => params[:hiria],
+   "errepidea" => params[:errepidea],
+   "iruzkina" => params[:iruzkina] })
   if @abisua.valid?
     @abisua.save
     redirect '/abisuak'
@@ -87,7 +114,7 @@ get '/abisuak' do
   @esteka2 = '/profila'
   @izen1 = "log out"
   @izen2 = "profila"
-  @abisuak = Abisua.denak
+  @abisuak = Abisua.all
   erb :abisuak
 end
 
@@ -108,4 +135,15 @@ get '/abisua/:id' do
   @izen1 = "log out"
   @izen2 = "profila"
   erb :abisua
+end
+
+get '/profila' do
+  #Profila editatzeko horria
+  puts session[:user_id]
+  if session[:user_id]
+    @page_title = "Profila editatu"
+    erb :profila
+  else
+    redirect '/puyana'
+  end
 end

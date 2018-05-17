@@ -19,52 +19,40 @@ class Erabiltzailea
 		errors.add(:pasahitza2, "pasahitzak ez dira berdinak") if (pasahitza != pasahitza2)
 	end
 
-	helbidea = File.join(File.dirname(__FILE__),'../data/erabiltzailea.json')
-	DATA = File.read(helbidea)
+	DATA = JSON.parse(File.read(File.join(File.dirname(__FILE__),'../data/erabiltzailea.json')))["erabiltzaileak"]
 
-	#def initialize(erabiltzaile_data)
-	  #@id = erabiltzaile_data['id']
-	  #@izena = erabiltzaile_data['izena']
-	  #@abizena = erabiltzaile_data['abizena']
-	  #@korreoa = erabiltzaile_data['korreoa']
-	  #@hiria = erabiltzaile_data['hiria']
-	  #@erabIzena = erabiltzaile_data['erabIzena']
-	  #@pasahitza = erabiltzaile_data['pasahitza']
-	#end
+	def self.all
+		return DATA.map {|erabiltzailea| self.new(erabiltzailea)}
+	end
+
+	def initialize(erabiltzaile_data)
+	  @id = erabiltzaile_data['id']
+	  @izena = erabiltzaile_data['izena']
+	  @abizena = erabiltzaile_data['abizena']
+	  @korreoa = erabiltzaile_data['korreoa']
+	  @hiria = erabiltzaile_data['hiria']
+	  @erabIzena = erabiltzaile_data['erabIzena']
+	  @pasahitza = erabiltzaile_data['pasahitza']
+	  @pasahitza2 = erabiltzaile_data['pasahitza2']
+	end
 
 	def bakarra
-		hash = JSON.parse(DATA)
-		@erabiltzaileak = hash["erabiltzaileak"]
-		puts erabIzena
-		puts korreoa
-		@erabIzenak = @erabiltzaileak.collect{| erab | erab["erabIzena"] == erabIzena}
-		@korreoak = @erabiltzaileak.collect{| erab | erab["korreoa"] == korreoa}
+		@erabIzenak = DATA.collect{| erab | erab["erabIzena"] == erabIzena}
+		@korreoak = DATA.collect{| erab | erab["korreoa"] == korreoa}
 		errors.add(:erabIzena, "erabiltzaile izen hori jada hartuta dago") if @erabIzenak.any?
 		errors.add(:korreoa, "korreo hori jada hartuta dago") if @korreoak.any?
 	end
-	
-	# Pertsona objektuen Array-a itzuli
-	def self.all
-	  DATA.map {|erabiltzailea| new(erabiltzailea)}
+
+
+	def self.hurrengoId
+		zenb = self.all.length
+		zenb = zenb +1
+		return zenb
 	end
 
-	#def self.new(izena, abizena, korreoa, hiria, erabIzena, pasahitza, pasahitza2)
-	  #@id = 2
-	  #@izena = :izena
-	  #@abizena = :abizena
-	  #@korreoa = :korreoa
-	  #@hiria = :hiria
-	  #@erabIzena = :erabIzena
-	  #@pasahitza = :pasahitza
-	  #return self
-	#end
-
 	def save
-		hash = JSON.parse(DATA)
-		zenb = hash["erabiltzaileak"].length
-		zenb = zenb +1
 	  map = {
-	  		"id" => zenb,
+	  		"id" => @id,
 			"izena" => @izena,
 			"abizena" => @abizena,
 			"korreoa" => @korreoa,
@@ -73,17 +61,18 @@ class Erabiltzailea
 			"pasahitza" => @pasahitza
 	  }
 	  helbidea = File.join(File.dirname(__FILE__),'../data/erabiltzailea.json')
-	  File.open(helbidea, "r+") do |f|
-	  hash = JSON.parse(f.read)
-	  hash["erabiltzaileak"].push(map)
+	  DATA.push(map)
 	  File.open(helbidea, "w+") do |fi| 
-	  fi.write(hash.to_json)
-	  end
+	  fi.write(DATA.to_json)
 	  end
 	end
 
 	#id-a daukan pertsona itzuli
 	def self.find(id)
-	  self.all.select{|erabiltzailea| erabiltzailea.id == id}.first
+	  self.all.find{|erabiltzailea| erabiltzailea.id == id}
+	end
+
+	def self.find_by_erab(erabIzena, pasahitza)
+	  self.all.find{|erabiltzailea| erabiltzailea.erabIzena == erabIzena and erabiltzailea.pasahitza == pasahitza}
 	end
 end
