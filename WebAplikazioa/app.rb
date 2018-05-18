@@ -3,18 +3,34 @@ require_relative 'models/erabiltzailea.rb'
 require_relative 'models/abisua.rb'
 require 'cgi'
 require 'cgi/session'
-require 'cgi/session/pstore' 
 
 cgi = CGI.new("html4")
 
+begin 
+	session = CGI::Session.new(cgi, "new_session" => false)
+	session.delete
+rescue ArgumentError
+end
+session = CGI::Session.new(cgi, "new_session" => true)
+session.close
+
 get '/' do
   #HASIERAKO ORRIA
-  @page_title = "Hasierako orria"
-  @esteka1 = '/erregistratu'
-  @esteka2 = 'login'
-  @izen1 = "erregistratu"
-  @izen2 = "log in"
-  erb :index
+  if session[:user_id]
+    @page_title = "Hasierako orria"
+    @esteka1 = '/logout'
+    @esteka2 = '/profila'
+    @izen1 = "log out"
+    @izen2 = "profila"
+    erb :index
+  else
+    @page_title = "Hasierako orria"
+    @esteka1 = '/erregistratu'
+    @esteka2 = 'login'
+    @izen1 = "erregistratu"
+    @izen2 = "log in"
+    erb :index
+  end
 end
 
 get '/erregistratu' do
@@ -34,7 +50,7 @@ get '/login' do
   @esteka2 = 'login'
   @izen1 = "erregistratu"
   @izen2 = "log in"
-  erb :login
+  erb :login   
 end
 
 post '/login' do
@@ -50,10 +66,8 @@ post '/login' do
   else
     @user = Erabiltzailea.find_by_erab(@izena, @pass)
     if @user
-      session = CGI::Session
       session[:user_id] = @user.id
-      session[:user_email] = @user.korreoa
-      session[:user_name] = @user.erabIzena
+      puts session[:user_id]
       redirect '/abisuak'
     else
       @erroreak = 'Erabiltzaile edo pasahitz desegokiak'
@@ -76,8 +90,9 @@ post '/erregistratu' do
   "pasahitza" => params[:pasahitza], 
   "pasahitza2" => params[:pasahitza2]})
   if @user.valid?
+    puts "orain bai"
     @user.save
-    redirect '/abisuak'
+    redirect '/login'
   else
     @erroreak = @user.errors
     @page_title = "Erregistroa"
@@ -91,26 +106,26 @@ post '/erregistratu' do
 end
 
 post '/abisuaIgo' do
-  @abisua = Abisua.new({"id" => Abisua.hurrengoId,
-   "data" => Time.now ,
-   "mota" => params[:mota],
-   "probintzia" => params[:probintzia],
-   "hiria" => params[:hiria],
-   "errepidea" => params[:errepidea],
-   "iruzkina" => params[:iruzkina] })
-  if @abisua.valid?
-    @abisua.save
-    redirect '/abisuak'
-  else 
-    @erroreak = @abisua.errors
-    @page_title = "Abisua igo"
-    @esteka1 = '/logout'
-    @esteka2 = '/profila'
-    @izen1 = "log out"
-    @izen2 = "profila"
-    @para = params
-    erb :abisuaIgo
-  end
+    @abisua = Abisua.new({"id" => Abisua.hurrengoId,
+     "data" => Time.now ,
+     "mota" => params[:mota],
+     "probintzia" => params[:probintzia],
+     "hiria" => params[:hiria],
+     "errepidea" => params[:errepidea],
+     "iruzkina" => params[:iruzkina] })
+    if @abisua.valid?
+      @abisua.save
+      redirect '/abisuak'
+    else 
+      @erroreak = @abisua.errors
+      @page_title = "Abisua igo"
+      @esteka1 = '/logout'
+      @esteka2 = '/profila'
+      @izen1 = "log out"
+      @izen2 = "profila"
+      @para = params
+      erb :abisuaIgo
+    end
 end
 
 get '/abisuak' do
@@ -122,39 +137,81 @@ get '/abisuak' do
     @izen1 = "log out"
     @izen2 = "profila"
     @abisuak = Abisua.all
-    @sesioa = session
     erb :abisuak
-  else 
+  else
     redirect '/login'
   end
 end
 
 get '/abisuaIgo' do
-  @page_title = "Abisua igo"
-  @esteka1 = '/logout'
-  @esteka2 = '/profila'
-  @izen1 = "log out"
-  @izen2 = "profila"
-  erb :abisuaIgo
+  if session[:user_id]
+    @page_title = "Abisua igo"
+    @esteka1 = '/logout'
+    @esteka2 = '/profila'
+    @izen1 = "log out"
+    @izen2 = "profila"
+    erb :abisuaIgo
+  else
+    redirect '/login'
+  end
 end
 
 get '/abisua/:id' do
-  @abisua = Abisua.find(params[:id])
-  @page_title = "Abisua"
-  @esteka1 = '/logout'
-  @esteka2 = '/profila'
-  @izen1 = "log out"
-  @izen2 = "profila"
-  erb :abisua
+  if session[:user_id]
+    @abisua = Abisua.find(params[:id])
+    @page_title = "Abisua"
+    @esteka1 = '/logout'
+    @esteka2 = '/profila'
+    @izen1 = "log out"
+    @izen2 = "profila"
+    erb :abisua
+  else
+    redirect '/login'
+  end
 end
 
 get '/profila' do
   #Profila editatzeko horria
-  puts session[:user_id]
   if session[:user_id]
+    @user = Erabiltzailea.find(session[:user_id])
+    params[:izena] = @user.izena
+    params[:abizena] = @user.abizena
+    params[:korreoa] = @user.korreoa
+    params[:hiria] =  @user.hiria
+    params[:erabIzena] = @user.erabIzena
+
     @page_title = "Profila editatu"
+    @esteka1 = '/logout'
+    @esteka2 = '/profila'
+    @izen1 = "log out"
+    @izen2 = "profila"
     erb :profila
   else
     redirect '/login'
   end
+end
+
+post '/profila' do
+  @user = Erabiltzailea.find(session[:user_id])
+  @user.izena = params[:izena] 
+  @user.abizena = params[:abizena]
+  @user.korreoa = params[:korreoa] 
+  @user.hiria = params[:hiria]
+  @user.erabIzena = params[:erabIzena]
+  @user.pasahitza = params[:pasahitza]
+  @user.pasahitza2 = params[:pasahitza2]
+  if @user.valid?
+    @user.update
+    redirect '/abisuak'
+  else
+    @erroreak = @user.errors
+    @page_title = "Profila editatu"
+    @para = params
+    erb :profila
+  end
+end
+
+get '/logout' do
+  session = CGI::Session.new(cgi, "new_session" => true)
+  redirect '/'
 end

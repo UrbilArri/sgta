@@ -64,7 +64,22 @@ class Erabiltzailea
 	  DATA.push(map)
 	  mapa = {"erabiltzaileak" => DATA}
 	  File.open(helbidea, "w+") do |fi| 
-	  fi.write(DATA.to_json)
+	  fi.write(mapa.to_json)
+	  end
+	end
+
+	def update
+	  
+          helbidea = File.join(File.dirname(__FILE__),'../data/erabiltzailea.json')
+	  DATA[@id-1]["izena"]=@izena
+          DATA[@id-1]["abizena"]=@abizena
+          DATA[@id-1]["korreoa"]=@korreoa
+          DATA[@id-1]["hiria"]=@hiria
+          DATA[@id-1]["erabIzena"]=@erabIzena
+          DATA[@id-1]["pasahitza"]=@pasahitza
+          mapa = {"erabiltzaileak" => DATA}
+	  File.open(helbidea, "w+") do |fi| 
+	  fi.write(mapa.to_json)
 	  end
 	end
 
