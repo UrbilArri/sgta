@@ -12,6 +12,7 @@
 
       <div id='header'>
         <a href='/'><img src='/Social-Drive.png' alt='logo image' class='logo' style="background-color: rgb(153, 204, 255);" /></a>
+        <% if @sesioa.present? %><%=@sesioa[:user_email]%><% end %>
         <a href=<%= @esteka1 %> class='nav'><%= @izen1 %></a>
         <a href=<%= @esteka2 %> class='nav'><%= @izen2 %></a>
       </div>

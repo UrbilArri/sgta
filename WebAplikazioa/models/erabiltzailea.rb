@@ -62,6 +62,7 @@ class Erabiltzailea
 	  }
 	  helbidea = File.join(File.dirname(__FILE__),'../data/erabiltzailea.json')
 	  DATA.push(map)
+	  mapa = {"erabiltzaileak" => DATA}
 	  File.open(helbidea, "w+") do |fi| 
 	  fi.write(DATA.to_json)
 	  end

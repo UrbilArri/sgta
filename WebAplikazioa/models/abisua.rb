@@ -43,8 +43,9 @@ def save
 	  }
 	  helbidea = File.join(File.dirname(__FILE__),'../data/abisua.json')
 	  DATA.push(map)
+	  mapa = {"abisuak" => DATA}
 	  File.open(helbidea, "w+") do |fi| 
-	  fi.write(DATA.to_json)
+	  fi.write(mapa.to_json)
 	  end
 end
 

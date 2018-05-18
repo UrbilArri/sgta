@@ -1,6 +1,11 @@
 require 'sinatra'
 require_relative 'models/erabiltzailea.rb'
 require_relative 'models/abisua.rb'
+require 'cgi'
+require 'cgi/session'
+require 'cgi/session/pstore' 
+
+cgi = CGI.new("html4")
 
 get '/' do
   #HASIERAKO ORRIA
@@ -29,7 +34,6 @@ get '/login' do
   @esteka2 = 'login'
   @izen1 = "erregistratu"
   @izen2 = "log in"
-  session[:user_id]
   erb :login
 end
 
@@ -46,9 +50,11 @@ post '/login' do
   else
     @user = Erabiltzailea.find_by_erab(@izena, @pass)
     if @user
-      session[:user_id] = @user['id']
-      puts sessions[:user_id]
-      redirect '/profila'
+      session = CGI::Session
+      session[:user_id] = @user.id
+      session[:user_email] = @user.korreoa
+      session[:user_name] = @user.erabIzena
+      redirect '/abisuak'
     else
       @erroreak = 'Erabiltzaile edo pasahitz desegokiak'
       @page_title = "Logeatu"
@@ -109,13 +115,18 @@ end
 
 get '/abisuak' do
   #abisu guztietara eramango gaitu
-  @page_title = "Abisuak"
-  @esteka1 = '/logout'
-  @esteka2 = '/profila'
-  @izen1 = "log out"
-  @izen2 = "profila"
-  @abisuak = Abisua.all
-  erb :abisuak
+  if session[:user_id]
+    @page_title = "Abisuak"
+    @esteka1 = '/logout'
+    @esteka2 = '/profila'
+    @izen1 = "log out"
+    @izen2 = "profila"
+    @abisuak = Abisua.all
+    @sesioa = session
+    erb :abisuak
+  else 
+    redirect '/login'
+  end
 end
 
 get '/abisuaIgo' do
@@ -144,6 +155,6 @@ get '/profila' do
     @page_title = "Profila editatu"
     erb :profila
   else
-    redirect '/puyana'
+    redirect '/login'
   end
 end
